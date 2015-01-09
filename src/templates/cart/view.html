@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+	</br></br>
+	<div class='container'>
+	<div class='row'>
+	<div class='col-sm-12 col-md-10 col-sm-offset-1'>
+	{% if empty %}
+	<h1 style='text-align:center;'>{{ empty_message }}</h1>
+	<p style='text-align:center;'>Keep <a href="/products/">Shopping</a></p>
+	{% else %}
+
+				<table class='table table-hover'>
+					<thead>
+							<th class="text-left">Product</th>
+							<th class="text-center">Price</th>
+							<th class="text-center">Quantity</th>
+							<th></th>
+					</thead>
+					<tfoot>
+						<tr>
+	                        <td>   </td>
+	                        <td>   </td>
+	                        <td>   </td>
+	                        <td><h5>Subtotal</h5></td>
+	                        <td class="text-right"><h5><strong>${{ cart.total }}</strong></h5></td>
+	                    </tr>
+	                    <tr>
+	                        <td>   </td>
+	                        <td>   </td>
+	                        <td>   </td>
+	                        <td><h5>Shipping</h5></td>
+	                        <td class="text-right"><h5><strong>$6.94</strong></h5></td><!--TODO-->
+	                    </tr>
+	                    <tr>
+	                        <td>   </td>
+	                        <td>   </td>
+	                        <td>   </td>
+	                        <td><h3>Total</h3></td>
+	                        <td class="text-right"><h3><strong>${{ cart.total }}</strong></h3></td>
+	                    </tr>
+	                    <tr>
+	                        <td>   </td>
+	                        <td>   </td>
+	                        <td>   </td>
+	                        <td>
+		                        <button type="button" class="btn btn-default">
+		                            <a href='/'><span class="glyphicon glyphicon-shopping-cart"></span> Continue Shopping</a>
+	                        </button>
+	                        </td>
+	                        <td>
+	                        <button type="button" class="btn btn-success">
+	                            <a href='{%url "checkout" %}'><span class="glyphicon glyphicon-play"></span>Checkout</a>
+	                        </button></td>
+	                    </tr>
+
+
+					</tfoot>
+					{% for item in cart.cartitem_set.all %}
+
+					<tr>
+						 <td class="col-sm-8 col-md-6">
+	                        <div class="media">
+                        		<a class="thumbnail pull-left" href='{{ item.product.get_absolute_url }}'>
+                        		{% if item.product.productimage_set.all %}
+									{% for subitem in item.product.productimage_set.all %}
+										{% if subitem.featured %}
+                                        <img class='img-responsive' src="{{ MEDIA_URL }}{{ subitem.image }}" style="width: 72px; height: 72px;">
+										{% endif %}
+									{% endfor %}
+								{% else %}
+									<img class='img-responsive' src='{% static "img/placeholder.svg" %}'>
+								{% endif %}
+								</a>
+								<div class="media-body">
+							    	<h4 class="media-heading"><a href='{{ item.product.get_absolute_url }}'>{{ item.product }}</a></h4>
+							    	<!--span>Status: </span><span class="text-success"><strong>In Stock</strong></span-->
+							    </div>
+						    </div>
+						</td>
+						<td class="col-sm-1 col-md-1 text-center"><strong>${{ item.product.price }}</strong></td>
+						<td class="col-sm-1 col-md-1 text-center"><strong>{{ item.quantity }}</strong></td>
+						<td class="col-sm-1 col-md-1 text-center"></td>
+						<td class="col-sm-1 col-md-1 text-center"><button type="button" class="btn btn-link btn-xs"><a href='{% url "remove_from_cart" item.id %}'><span class="glyphicon glyphicon-trash"></span> Remove</a></button></td>
+					</tr>
+					{% endfor %}
+
+				</table>		
+
+
+	{% endif %}
+	</div>
+</div>	
+</div>
+{% endblock %}

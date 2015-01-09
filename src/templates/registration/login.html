@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block styles %}
+
+{% endblock %}
+{% block content %}
+<div class="container">
+	<div class="login-container">
+		    <div class="avatar"></div>
+		    <span class="glyphicon glyphicon-lock"></span>
+            <div id="output"></div>
+            <div class="form-box">
+					<form method="post" action="." class="form-horizontal" role="form">
+  					{% csrf_token %}
+  					 	<div class="form-group">
+  							{{ form.as_p }}
+    					</div>
+  						<input type="submit" value="{% trans 'Log in' %}" /></p>
+  						<input type="hidden" name="next" value="{{ next }}" />
+					</form>
+					<p>{% trans "Forgot password" %}? <a href="{% url 'auth_password_reset' %}">{% trans "Reset it" %}</a>!</p>
+				    <p>{% trans "Not member" %}? <a href="{% url 'registration_register' %}">{% trans "Register" %}</a>!</p>
+            </div>
+        </div>
+
+</div>
+
+
+{% endblock %}
+  
+

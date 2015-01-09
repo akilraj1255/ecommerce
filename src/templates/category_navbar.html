@@ -1,0 +1,19 @@
+ {% load staticfiles %}
+    <div id="category" class="container">
+      <div class="navbar">
+          <div class="navbar-inner">
+            <div class="container">
+              <ul class="nav nav-justified">
+                <li class="active"><a href="/">Home</a></li>
+                <li><a href="{% url 'display_category' 'tops' %}">Tops</a></li>
+                <li><a href="{% url 'display_category' 'dresses' %}">Dresses</a></li>
+                <li><a href="{% url 'display_category' 'outwear' %}">Outwear</a></li>
+                <li><a href="{% url 'display_category' 'pants' %}">Pants</a></li>
+                <li><a href="{% url 'display_category' 'shorts' %}">Shorts</a></li>
+                <li><a href="{% url 'display_category' 'skirts' %}">Skirts</a></li>
+                <li><a href="{% url 'display_category' 'sales' %}">Sales</a></li>
+              </ul>
+            </div>
+          </div>
+        </div><!-- /.navbar -->
+    </div>           

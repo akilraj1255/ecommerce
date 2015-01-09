@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block head_title %}
+Welcome to
+{% endblock %}
+
+{% block styles %}
+
+.carousel-caption {
+  color: pink;
+}
+
+
+/* Carousel base class */
+
+/* Since positioning the image, we need to help out the caption */
+.carousel-caption {
+  z-index: 10;
+}
+
+/* Declare heights because of positioning of img element */
+
+.carousel-inner > .item > img {
+  top: 0;
+  left: 0;
+  min-width: 75%;
+  width: 85%;
+}
+
+
+{% endblock %}
+
+{% block jquery %}
+//alert("welcome!");
+{% endblock%}
+
+{# Comments here #}
+
+
+{% block mycarousel %}
+    <div class="container">
+	  	<div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+		      <ol class="carousel-indicators">
+		        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+		        <li data-target="#myCarousel" data-slide-to="1"></li>
+		        <li data-target="#myCarousel" data-slide-to="2"></li>
+		      </ol>
+		      <div class="carousel-inner">
+		        <div class="item active">
+		          <img class='img-responsive' src='{% static "img/Carousel1.jpg" %}' class='center-block' alt="First slide">
+		          <div class="container">
+		            <div class="carousel-caption">
+		              <!--p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p-->
+		            </div>
+		          </div>
+		        </div>
+		        <div class="item">
+		          <img class='img-responsive' src='{% static "img/Carousel2.jpg" %}' class='center-block' alt="Second slide">
+		          <div class="container">
+		            <div class="carousel-caption">
+		            </div>
+		          </div>
+		        </div>
+		        <div class="item">
+		          <img class='img-responsive' src='{% static "img/Carousel3.jpg" %}' class='center-block' alt="Third slide">
+		          <div class="container">
+		            <div class="carousel-caption">
+		            </div>
+		          </div>
+		        </div>
+		      </div>
+		      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+		      	 <span class="glyphicon glyphicon-chevron-left"></span></a>
+		      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+		      	 <span class="glyphicon glyphicon-chevron-right"></span></a>
+		</div><!-- /.carousel -->
+    </div>
+{% endblock %}
+
+
+{% block content %}
+     </br></br>
+     <div class="page-header">
+        <h1>What's New</h1>
+      </div>
+      <div class='row'>
+ 
+{% for product in products %}
+		<div class='col-sm-3'>
+
+					{% if product.productimage_set.all %}
+
+							{% for item in product.productimage_set.all %}
+
+							{% if item.featured %}
+							<a href='{{ product.get_absolute_url }}'>
+								<img class='img-responsive' src="{{ MEDIA_URL }}{{ item.image }}" />
+							</a>
+							{% endif %}
+							 
+
+
+							{% endfor %}
+
+					{% else %}
+					<img class='img-responsive' src='{% static "img/placeholder.svg" %}' />
+					{% endif %}
+
+					<div class="caption ">
+					<a href='{{ product.get_absolute_url }}'><h5>{{ product.title }}</h5></a>
+					<!--p>{{ product.description|truncatewords:15}}</p-->
+					</div>
+		
+
+
+		</div>
+
+{% cycle "" "" "" "</div><br/><hr/><div class='row'>" %}
+{% endfor %}
+
+</div>
+
+{% endblock %}
+
+<!-- -->

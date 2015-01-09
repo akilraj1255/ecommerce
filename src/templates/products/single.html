@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block jquery %}
+$(".add_to_cart_btn").click(function(e){
+	e.preventDefault(); 
+	$id_slug = $('#id_slug').val();
+	$id_qty = $('#id_qty').val();
+	$.ajax({
+        type: "POST",
+        url: "{% url 'add_ajax' %}",
+        data: {
+            csrfmiddlewaretoken: "{{ csrf_token }}",
+            qty: $id_qty,
+            slug: $id_slug,
+        },
+        dataType: "json",
+        success: function(data){
+            $(".add_to_cart_btn").val("Cart Updated").addClass("btn-success");
+            $(".cart_badge_info").text(data);
+        }, 
+        error: function(rs, e) {
+            alert("Some error occured");
+        }
+    });
+})
+{% endblock %}
+
+
+<div class="page-header">
+  <h1>{{ product.title }}</h1>
+</div>
+
+{% block content %}
+
+<div class='container'>
+<div class='row'>
+	<div class='col-sm-6'>
+	{% for img in images %}
+
+		{% if img.featured %}
+		<div class="col-xs-12">
+			<img class='img-responsive' src="{{ MEDIA_URL }}{{ img.image }}" />
+		</div>
+		{% endif %}
+	{% endfor %}
+	{% for img in images %}
+		{% if img.thumbnail %}
+		<div class="col-xs-6">
+	    <a href="#" class="thumbnail">
+	      <img class='img-responsive' src="{{ MEDIA_URL }}{{ img.image }}">
+	    </a>
+	  	</div>
+
+		{% endif %}
+								 
+	{% endfor %}
+	</div>
+	<div class='col-sm-6'>
+		<div>
+			 <h1>{{ product.title }} </h1>
+			 <div class="fb-like" data-href="{{ request.url.get_full_path }}" data-width="200" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true">
+		     </div>
+			 <div>
+				<hr/>
+				    Price: {{ product.price }} <br/>
+				<hr/>
+	 	     </div>
+	 	 </div>    
+			
+     	 <form class='form-horizontal' method='POST' action='{% url "add_to_cart" product.slug %}'> 
+     	 	{% csrf_token %}
+		 	 <input  class="form-control"  name='slug' id='id_slug' type='hidden' value='{{product.slug }}'/>
+
+		 	<div class="form-group">
+				<label for="id_qty" class="col-sm-2 control-label">Quantity </label>
+				<div class="col-sm-10">
+					<input  class="form-control"  name='qty' id='id_qty' type='number' value='1'/>
+				</div>
+			</div> 
+		 	
+		 	{% if product.variation_set.all %}
+
+			 	{% if product.variation_set.sizes %}
+			 	<div class="form-group">
+				    <label for="id_size" class="col-sm-2 control-label">Size </label>
+					<div class="col-sm-10">
+						 <select class='form-control' name='size' id='id_size'>
+			        	{% for item in product.variation_set.sizes %}
+			 		    <option value='{{ item.title|lower }}'>{{ item.title|capfirst }}</option>
+			 		    {% endfor %}
+			 	        </select>
+			 	    </div>
+			    </div>     
+			 	{% endif %}
+		 	
+
+			 	 {% if product.variation_set.colors %}
+			 	<div class="form-group">
+				    <label for="id_color" class="col-sm-2 control-label">Color </label>
+					<div class="col-sm-10"> 
+			 	        <select class='form-control' name='color' id='id_color'>
+			 	        {% for item in product.variation_set.colors %}
+			 	    	    <option value='{{ item.title|lower }}'>{{ item.title|capfirst }}</option>
+			 		    {% endfor %}
+			 	        </select>
+			 	    </div>    
+			 	</div>    
+			 	{% endif %}
+
+		 	{% endif %}
+		    <div class="form-group">
+		        <input  class='add_to_cart_btn btn btn-default btn-block btn-cart' type='submit' value='Add to cart'/>
+		    </div>    
+
+	 </form>
+	</div>
+</div>
+
+{% for img in images %}
+<div class='row'>
+		{% if img.productSet %}
+		<div class="col-xs-24">
+			<img class='img-responsive' src="{{ MEDIA_URL }}{{ img.image }}" />
+		</div>
+		{% endif %}
+{% endfor %}
+
+{% for img in images %}
+<div class='row'>
+		{% if img.description %}
+		<div class="col-xs-24">
+			<img class='img-responsive' src="{{ MEDIA_URL }}{{ img.image }}" />
+		</div>
+		{% endif %}
+{% endfor %}
+
+{% for img in images %}
+<div class='row'>
+		{% if img.front %}
+		<div class="col-xs-24">
+			<img class='img-responsive' src="{{ MEDIA_URL }}{{ img.image }}" />
+		</div>
+		{% endif %}
+{% endfor %}
+
+{% for img in images %}
+<div class='row'>
+		{% if img.back %}
+		<div class="col-xs-24">
+			<img class='img-responsive' src="{{ MEDIA_URL }}{{ img.image }}" />
+		</div>
+		{% endif %}
+{% endfor %}
+
+{% for img in images %}
+<div class='row'>
+		{% if img.detail %}
+		<div class="col-xs-24">
+			<img class='img-responsive' src="{{ MEDIA_URL }}{{ img.image }}" />
+		</div>
+		{% endif %}
+{% endfor %}
+
+{% for img in images %}
+<div class='row'>
+		{% if img.size %}
+		<div class="col-xs-24">
+			<img class='img-responsive' src="{{ MEDIA_URL }}{{ img.image }}" />
+		</div>
+		{% endif %}
+{% endfor %}
+</div>
+
+
+
+{% endblock %}

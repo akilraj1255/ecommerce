@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+
+
+{% block javascript %}
+
+    // This identifies your website in the createToken call below
+    Stripe.setPublishableKey('pk_test_4Xq2dP9hGRdG8ze5kvaq1szH');
+ 
+    var stripeResponseHandler = function(status, response) {
+      var $form = $('#payment-form');
+ 
+      if (response.error) {
+        // Show the errors on the form
+        $form.find('.payment-errors').text(response.error.message);
+        $form.find('button').prop('disabled', false);
+      } else {
+        // token contains id, last4, and card type
+        var token = response.id;
+        // Insert the token into the form so it gets submitted to the server
+        $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+        // and re-submit
+        $form.get(0).submit();
+      }
+    };
+ 
+    jQuery(function($) {
+      $('#payment-form').submit(function(e) {
+        var $form = $(this);
+ 
+        // Disable the submit button to prevent repeated clicks
+        $form.find('button').prop('disabled', true);
+ 
+        Stripe.createToken($form, stripeResponseHandler);
+ 
+        // Prevent the form from submitting with the default action
+        return false;
+      });
+    });
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+     <h2>Checkout</h2>
+     <h3>Order Total: {{ cart.total }}</h3>
+      </br> 
+  </div>  
+      <form action="" method="POST" class="form-horizontal" role="form">
+      {% csrf_token %}
+       <div class="row">
+         <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-8 col-md-offset-5">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionid" href="checkout.html#one">
+                <h4>Step 1: Please input shipping address</h4>
+              </a>  
+            </div> 
+          </div>    
+         <!--  <div class="accordion" id="accordionid">
+          <div class="accordion-group">
+            <div class="accordion-heading"> 
+
+          <div id="one" class="collapse">
+            <div class="accordion-inner">   -->
+
+              <div class="form-group required">
+                <label class="col-sm-4 control-label" for="Fullname">Full Name <sup>*</sup> </label>
+                <div class="col-sm-8">
+                  <input required type="text" class="form-control" id="Fullname" placeholder="Full Name">
+                </div>
+              </div>
+              <div class="form-group required">
+                <label class="col-sm-4 control-label" for="Address1">Address </label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="Address1" placeholder="Address">
+                </div>  
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 control-label" for="Address2">Address (Line 2) </label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="Address2" placeholder="Address (Line 2)">
+                </div>  
+              </div>
+              <div class="form-group required">
+                <label class="col-sm-4 control-label" for="City">City <sup>*</sup> </label>
+                <div class="col-sm-8">
+                  <input required type="text" class="form-control" id="City" placeholder="City">
+                </div>  
+              </div>
+              <div class="form-group required">
+                <label class="col-sm-4 control-label" for="State">State <sup>*</sup> </label>
+                <div class="col-sm-8">
+                  <input required type="text" class="form-control" id="State" placeholder="State">
+                </div>  
+              </div>
+              <div class="form-group required">
+                          <label class="col-sm-4 control-label" for="Country">Country <sup>*</sup></label>   
+                          <div class="col-sm-8">  
+                            <select class="form-control" required aria-required="true" id="Country" name="Country">
+                              <option value="">Choose</option>
+                              <option value="38">Algeria</option>
+                              <option value="39">American Samoa</option>
+                              <option value="40">Andorra</option>
+                              <option value="41">Angola</option>
+                              <option value="42">Anguilla</option>
+                              <option value="43">Antigua and Barbuda</option>
+                              <option value="44">Argentina</option>
+                              <option value="45">Armenia</option>
+                              <option value="46">Aruba</option>
+                              <option value="24">Australia</option>
+                              <option value="2">Austria</option>
+                              <option value="47">Azerbaijan</option>
+                              <option value="48">Bahamas</option>
+                              <option value="49">Bahrain</option>
+                              <option value="50">Bangladesh</option>
+                              <option value="3">Belgium</option>
+                              <option value="34">Bolivia</option>
+                              <option value="4">Canada</option>
+                              <option value="5">China</option>
+                              <option value="16">Czech Republic</option>
+                              <option value="20">Denmark</option>
+                              <option value="7">Finland</option>
+                              <option value="8">France</option>
+                              <option value="1">Germany</option>
+                              <option value="9">Greece</option>
+                              <option value="22">HongKong</option>
+                              <option value="26">Ireland</option>
+                              <option value="29">Israel</option>
+                              <option value="10">Italy</option>
+                              <option value="32">Ivory Coast</option>
+                              <option value="11">Japan</option>
+                              <option value="12">Luxemburg</option>
+                              <option value="35">Mauritius</option>
+                              <option value="13">Netherlands</option>
+                              <option value="27">New Zealand</option>
+                              <option value="31">Nigeria</option>
+                              <option value="23">Norway</option>
+                              <option value="14">Poland</option>
+                              <option value="15">Portugal</option>
+                              <option value="36">Romania</option>
+                              <option value="25">Singapore</option>
+                              <option value="37">Slovakia</option>
+                              <option value="30">South Africa</option>
+                              <option value="28">South Korea</option>
+                              <option value="6">Spain</option>
+                              <option value="18">Sweden</option>
+                              <option value="19">Switzerland</option>
+                              <option value="33">Togo</option>
+                              <option value="17">United Kingdom</option>
+                              <option value="21">United States</option>
+                            </select>
+                             </div>  
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-4 control-label" for="InputAdditionalInformation">Additional information</label>
+                    <div class="col-sm-8">
+                        <textarea rows="3" cols="26" name="InputAdditionalInformation" class="form-control" id="InputAdditionalInformation"></textarea>
+                     </div>   
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-4 control-label" for="InputMobile">Mobile phone <sup>*</sup></label>
+                    <div class="col-sm-8">
+                       <input  required type="tel"  name="InputMobile" class="form-control" id="InputMobile">
+                    </div>   
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-4 control-label" for="addressAlias">Address alias for future reference<sup>*</sup></label>
+                    <div class="col-sm-8">
+                      <input required type="text" value="My address" name="addressAlias" class="form-control" id="addressAlias">
+                    </div>  
+                  </div>
+                <!--{{ shipping_address_form.as_p }}-->
+
+      </div>  <!-- col-mid-6-->
+
+       <div class="col-md-6">
+              <div class="row">
+                <div class="col-md-8 col-md-offset-5">
+                  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionid2" href="checkout.html#two">
+                    <h4>Step 2: Please input billing address</h4>
+                  </a> 
+                </div>
+              </div>     
+          
+
+              <div class="form-group">
+            {{ billing_address_form.as_p }}
+             </div>
+        </div>     
+    </div> <!--row-->
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-5">
+          <a>
+          <h4>Pay by credit card:</h4>
+         </a>
+        </div>  
+
+        <span class="payment-errors"></span>
+        
+        <div class="form-group">
+          <p>
+            <label>
+              <span>Card Number</span>
+              <input type="text" size="20" data-stripe="number"/>
+            </label>
+          </p>
+        </div>
+     
+        <div class="form-group">
+          <p>
+            <label>
+              <span>CVC</span>
+              <input type="text" size="4" data-stripe="cvc"/>
+            </label>
+          </p>  
+        </div>
+     
+        <div class="form-group">
+          <p>
+            <label>
+              <span>Expiration (MM/YYYY)</span>
+              <input type="text" size="2" data-stripe="exp-month"/>
+            </label><span> / </span><input type="text" size="4" data-stripe="exp-year"/>
+          </p> 
+        </div>
+        <p><button type="submit">Submit Payment</button></p>
+      </form>  
+    </div>
+</div>  
+</div>
+{% endblock %}

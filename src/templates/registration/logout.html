@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+</br></br>
+<div class="alert alert-warning alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+  <strong>A quick note!</strong> You have been logged out.
+  <form method="post" action=".">
+  					{% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}" />
+  </form>
+</div>
+
+{% endblock %}

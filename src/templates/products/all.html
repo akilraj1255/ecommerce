@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block styles %}
+h5, p{
+	text-align: center;
+}
+
+{% endblock %}
+{% block content %}
+
+</br></br>
+{% for product in products %}
+	<div class='col-sm-3'>
+
+		{% if product.productimage_set.all %}
+
+			{% for item in product.productimage_set.all %}
+
+				{% if item.featured %}
+					<a href='{{ product.get_absolute_url }}'>
+						<img class='img-responsive' src="{{ MEDIA_URL }}{{ item.image }}" />
+					</a>
+				{% endif %}
+
+			{% endfor %}
+
+        {% else %}	
+
+		    <img class='img-responsive' src='{% static "img/placeholder.svg" %}' />
+		{% endif %}
+
+		<div class="caption ">
+			<a href='{{ product.get_absolute_url }}'><h5>	<h5> {{ product.title }} {{ product.price }}</h5></h5></a>
+			<!--p>{{ product.description|truncatewords:15}}</p-->
+		</div>
+		
+
+
+	</div>
+
+{% cycle "" "" "" "</div><br/><hr/><div class='row'>" %}
+{% endfor %}
+
+{% endblock %}
