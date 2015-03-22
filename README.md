@@ -2,5 +2,5 @@
 
 Link
 ------------
-This website is deployed in Webfaction and currently on trail, open the app [here!](www.5meow.com).
+This website is deployed in Webfaction and currently on trail, open the app [here!](http://www.5meow.com).
 
